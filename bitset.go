@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"log"
 	"strconv"
 )
@@ -17,7 +16,7 @@ type BitSet interface {
 	Set(pos int) error
 	Test(pos int) bool // x = 001, x.Test(0) = false
 	Len() int
-	String()
+	String() string
 }
 
 func newBitSet(len int) BitSet {
@@ -27,13 +26,20 @@ func (b *bitSet) Len() int {
 	return b.len
 }
 
+func calcUpDigit64(pos int) uint64 {
+	if 0 < pos && 64 < pos {
+		log.Fatalf("Cannot set more than 64, you set ", pos)
+	}
+	return 1 << uint(pos)
+
+}
 func (b *bitSet) Set(pos int) (e error) {
 	if pos < b.len {
 		e = errors.New("pos=" + string(pos) + " is bigger than len=" + string(b.len))
 	}
 	bodyIdx := pos / 64
-	setPos := uint64(pos - bodyIdx*64)
-	value := b.body[bodyIdx] | setPos
+	shifts := pos % 64
+	value := b.body[bodyIdx] | calcUpDigit64(shifts)
 	b.body[bodyIdx] = value
 	return
 }
@@ -76,11 +82,19 @@ func uint64ToBinary(value uint64, l int) string {
 	return buf.String()
 }
 
-func (b *bitSet) String() {
-	println("length:", b.len)
+func (b *bitSet) String() string {
+	len := b.len
+	println(len)
+	var buf bytes.Buffer
 	for _, x := range b.body {
-		fmt.Print(uint64ToBinary(x, 64))
-		fmt.Print(" ")
+		if len < 64 {
+			buf.WriteString(uint64ToBinary(x, len))
+
+		} else {
+			buf.WriteString(uint64ToBinary(x, 64))
+			buf.WriteString(" ")
+		}
+		len -= 64
 	}
-	fmt.Println("")
+	return buf.String()
 }

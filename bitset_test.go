@@ -56,7 +56,16 @@ func TestStringBitset(t *testing.T) {
 
 		}
 	}()
-	b := newBitSet(123)
-	b.Set(3)
-	b.String()
+	b := newBitSet(1)
+	b.Set(0)
+	if b.String() != "1" {
+		t.Errorf("should be '1', but " + b.String())
+	}
+
+	b = newBitSet(2)
+	b.Set(0)
+	if b.String() != "01" {
+		println("len=", len(b.String()))
+		t.Errorf("should be '01', but " + b.String())
+	}
 }
