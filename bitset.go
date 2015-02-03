@@ -53,7 +53,6 @@ func uint64ToBinary(value uint64, l int) string {
 		tmp /= 2
 		digits++
 	}
-	println("digits=", digits)
 	if l < digits {
 		log.Fatalf("Specified digits=" + string(l) + " are not enough.")
 	}

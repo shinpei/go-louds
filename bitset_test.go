@@ -24,15 +24,32 @@ func TestAllocateVariable(t *testing.T) {
 }
 
 func TestUint64ToBinary(t *testing.T) {
-	println(uint64ToBinary(0, 1))
-	println(uint64ToBinary(1, 1))
-	println(uint64ToBinary(2, 2))
-	println(uint64ToBinary(3, 3))
-	println(uint64ToBinary(5, 3))
-	println(uint64ToBinary(5, 64))
+	if uint64ToBinary(0, 1) != "0" {
+		t.Errorf("should be '0'")
+	}
+	if uint64ToBinary(0, 2) != "00" {
+		t.Errorf("should be '00'")
+	}
+	if uint64ToBinary(1, 1) != "1" {
+		t.Errorf("should be '1'")
+	}
+	if uint64ToBinary(2, 2) != "10" {
+		t.Errorf("should be '10'")
+	}
+	if uint64ToBinary(3, 2) != "11" {
+		t.Errorf("should be '11'")
+	}
+	if uint64ToBinary(3, 3) != "011" {
+		t.Errorf("should be '011'")
+	}
+	if uint64ToBinary(5, 3) != "101" {
+		t.Errorf("should be '101'")
+	}
+	if uint64ToBinary(5, 64) != "0000000000000000000000000000000000000000000000000000000000000101" {
+		t.Errorf("should be '000000000000000000000000000000000000000000000000000000000000101'")
+	}
 }
 
-/*
 func TestStringBitset(t *testing.T) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -43,4 +60,3 @@ func TestStringBitset(t *testing.T) {
 	b.Set(3)
 	b.String()
 }
-*/
