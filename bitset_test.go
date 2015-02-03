@@ -23,6 +23,16 @@ func TestAllocateVariable(t *testing.T) {
 	}
 }
 
+func TestUint64ToBinary(t *testing.T) {
+	println(uint64ToBinary(0, 1))
+	println(uint64ToBinary(1, 1))
+	println(uint64ToBinary(2, 2))
+	println(uint64ToBinary(3, 3))
+	println(uint64ToBinary(5, 3))
+	println(uint64ToBinary(5, 64))
+}
+
+/*
 func TestStringBitset(t *testing.T) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -30,5 +40,7 @@ func TestStringBitset(t *testing.T) {
 		}
 	}()
 	b := newBitSet(123)
+	b.Set(3)
 	b.String()
 }
+*/

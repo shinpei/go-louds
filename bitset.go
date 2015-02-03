@@ -1,7 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"errors"
+	"fmt"
+	"log"
+	"strconv"
 )
 
 type bitSet struct {
@@ -39,8 +43,45 @@ func (b *bitSet) Test(pos int) bool {
 	return true
 }
 
-func (b *bitSet) String() {
-	for _, x := range b.body {
-		println(x)
+func uint64ToBinary(value uint64, l int) string {
+	var buf bytes.Buffer
+
+	// Count digits first
+	tmp := value
+	digits := 1
+	for 1 < tmp {
+		tmp /= 2
+		digits++
 	}
+	println("digits=", digits)
+	if l < digits {
+		log.Fatalf("Specified digits=" + string(l) + " are not enough.")
+	}
+	for 1 < value {
+		buf.WriteString(strconv.Itoa(int(value % 2)))
+		value /= 2
+	}
+
+	buf.WriteString(strconv.Itoa(int(value)))
+
+	s := buf.String()
+	// reverse
+	buf.Reset()
+	// put heading zeros
+	for x := 0; x < l-digits; x++ {
+		buf.WriteString("0")
+	}
+	for idx := len(s); idx > 0; idx-- {
+		buf.WriteString(s[idx-1 : idx])
+	}
+	return buf.String()
+}
+
+func (b *bitSet) String() {
+	println("length:", b.len)
+	for _, x := range b.body {
+		fmt.Print(uint64ToBinary(x, 64))
+		fmt.Print(" ")
+	}
+	fmt.Println("")
 }
